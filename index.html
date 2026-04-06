@@ -598,8 +598,11 @@
             gap: 88px;
             align-items: center;
         }
-        .about-image-wrap { position: relative; }
-        .about-image-wrap::before {
+        /* About Carousel */
+        .about-carousel-wrap {
+            position: relative;
+        }
+        .about-carousel-wrap::before {
             content: '';
             position: absolute;
             top: 28px; left: 28px;
@@ -607,12 +610,70 @@
             border: 1px solid var(--accent-light);
             z-index: 0;
         }
-        .about-image-wrap img {
+        .about-carousel {
             position: relative;
             z-index: 1;
+            overflow: hidden;
             width: 100%;
             aspect-ratio: 4/5;
+        }
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            display: block;
+        }
+        .carousel-slide img.rotate-cw {
+            transform: rotate(90deg) scale(1.35);
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(250,250,248,0.88);
+            border: 1px solid var(--accent-light);
+            width: 38px; height: 38px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            transition: var(--transition);
+            color: var(--accent);
+            font-size: 1rem;
+        }
+        .carousel-btn:hover { background: var(--accent); color: white; }
+        .carousel-prev { left: 12px; }
+        .carousel-next { right: 12px; }
+        .carousel-dots {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 7px;
+            z-index: 3;
+        }
+        .c-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.45);
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .c-dot.active {
+            background: white;
+            transform: scale(1.3);
         }
         .about-content { padding: 8px 0; }
         .about-quote {
@@ -948,7 +1009,7 @@
             .testimonials-grid { grid-template-columns: 1fr; max-width: 600px; }
             .contact-inner { grid-template-columns: 1fr; gap: 52px; }
             .about-inner { grid-template-columns: 1fr; gap: 52px; }
-            .about-image-wrap::before { display: none; }
+            .about-carousel-wrap::before { display: none; }
         }
         @media (max-width: 768px) {
             :root { --nav-h: 60px; }
@@ -1198,10 +1259,34 @@
 <section id="about" class="section" aria-labelledby="about-title">
     <div class="about-inner">
 
-        <div class="about-image-wrap fade-in">
-            <img src="Images/Photographer .JPG"
-                 alt="Bishal — Bay Area professional photographer based in Sunnyvale"
-                 loading="lazy">
+        <div class="about-carousel-wrap fade-in">
+            <div class="about-carousel" id="aboutCarousel">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide">
+                        <img src="Images/Photographer .JPG"
+                             alt="Bishal — Bay Area professional photographer based in Sunnyvale"
+                             loading="lazy">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="Images/PB.JPG"
+                             alt="Bishal on a paddleboard — adventurous photographer based in the Bay Area"
+                             loading="lazy">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="Images/Photogh.jpg"
+                             alt="Bishal in the mountains holding wildflowers — nature and photography"
+                             loading="lazy"
+                             class="rotate-cw">
+                    </div>
+                </div>
+                <button class="carousel-btn carousel-prev" aria-label="Previous photo" onclick="moveCarousel(-1)">&#8592;</button>
+                <button class="carousel-btn carousel-next" aria-label="Next photo" onclick="moveCarousel(1)">&#8594;</button>
+                <div class="carousel-dots" id="carouselDots">
+                    <span class="c-dot active" onclick="goCarousel(0)"></span>
+                    <span class="c-dot" onclick="goCarousel(1)"></span>
+                    <span class="c-dot" onclick="goCarousel(2)"></span>
+                </div>
+            </div>
         </div>
 
         <div class="about-content fade-in">
@@ -1611,6 +1696,22 @@
             document.getElementById('formSuccess').style.display = 'block';
         }, 1400);
     }
+
+    // ── About Carousel ────────────────────────────────────────
+    let carouselIndex = 0;
+    const totalSlides = 3;
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.c-dot');
+
+    function goCarousel(n) {
+        carouselIndex = (n + totalSlides) % totalSlides;
+        track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
+    }
+    function moveCarousel(dir) { goCarousel(carouselIndex + dir); }
+
+    // Auto-advance every 4s
+    setInterval(() => moveCarousel(1), 4000);
 
     // ── Portfolio filter ──────────────────────────────────────
     function filterPortfolio(category) {
