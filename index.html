@@ -172,6 +172,22 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-logo-img {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: white;
+            padding: 3px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .nav.transparent .nav-logo-img {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.25);
         }
         .nav.transparent .nav-logo { color: white; }
         .nav.scrolled   .nav-logo { color: var(--black); }
@@ -962,6 +978,18 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-logo-img {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: white;
+            padding: 3px;
+            flex-shrink: 0;
         }
         .footer-copy { font-size: 0.72rem; text-align: center; line-height: 1.6; }
         .footer-copy small { font-size: 0.65rem; opacity: 0.6; }
@@ -1041,7 +1069,10 @@
      NAVIGATION
 ============================================= -->
 <nav class="nav transparent" id="mainNav" role="navigation" aria-label="Main navigation">
-    <a href="#home" class="nav-logo" aria-label="Bishal Imagery — Home">Bishal Imagery</a>
+    <a href="#home" class="nav-logo" aria-label="Bishal Imagery — Home">
+        <img src="Images/Logo.jpg" alt="Bishal Imagery logo" class="nav-logo-img">
+        Bishal Imagery
+    </a>
 
     <ul class="nav-links" role="list">
         <li><a href="#home">Home</a></li>
@@ -1591,7 +1622,10 @@
 ============================================= -->
 <footer role="contentinfo">
     <div class="footer-inner">
-        <div class="footer-logo">Bishal Imagery</div>
+        <div class="footer-logo">
+            <img src="Images/Logo.jpg" alt="Bishal Imagery logo" class="footer-logo-img">
+            Bishal Imagery
+        </div>
 
         <p class="footer-copy">
             &copy; 2025 Bishal Imagery &middot; Bay Area, California<br>
