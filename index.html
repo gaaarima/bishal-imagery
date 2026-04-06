@@ -466,6 +466,60 @@
            PORTFOLIO
         ============================================ */
         #portfolio { background: var(--white); }
+
+        /* Filter tabs */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 52px;
+        }
+        .filter-btn {
+            font-family: var(--font-body);
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 9px 22px;
+            border: 1px solid var(--gray-200);
+            background: transparent;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Category label above grid */
+        .portfolio-category-group { margin-bottom: 56px; }
+        .portfolio-category-group:last-child { margin-bottom: 0; }
+        .portfolio-category-label {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--black);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+            max-width: 1440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .portfolio-category-label span {
+            font-style: normal;
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            vertical-align: middle;
+            margin-left: 12px;
+        }
+
         .portfolio-grid {
             columns: 3 280px;
             column-gap: 14px;
@@ -478,6 +532,10 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .portfolio-item.hidden {
+            display: none;
         }
         .portfolio-item img {
             width: 100%;
@@ -505,6 +563,9 @@
         .portfolio-item:hover img { transform: scale(1.07); }
         .portfolio-item:hover .portfolio-overlay { background: rgba(26,26,26,0.42); }
         .portfolio-item:hover .portfolio-overlay-label { opacity: 1; transform: translateY(0); }
+
+        /* Hide entire category group if all items hidden */
+        .portfolio-category-group.group-hidden { display: none; }
 
         /* ============================================
            ABOUT
@@ -957,71 +1018,83 @@
         <div class="section-divider" aria-hidden="true"></div>
     </header>
 
-    <div class="portfolio-grid" role="list" aria-label="Photography portfolio gallery">
+    <!-- Filter Buttons -->
+    <div class="portfolio-filters fade-in" role="group" aria-label="Filter portfolio by category">
+        <button class="filter-btn active" data-filter="all" onclick="filterPortfolio('all')">All</button>
+        <button class="filter-btn" data-filter="wedding" onclick="filterPortfolio('wedding')">Wedding</button>
+        <button class="filter-btn" data-filter="portrait" onclick="filterPortfolio('portrait')">Portrait &amp; Creative</button>
+        <button class="filter-btn" data-filter="landscape" onclick="filterPortfolio('landscape')">Landscape &amp; Adventure</button>
+        <button class="filter-btn" data-filter="architecture" onclick="filterPortfolio('architecture')">Architecture</button>
+    </div>
 
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Bridal portrait">
-            <img src="Images/IMG_6994.JPG" alt="Bridal portrait photography — Bay Area South Asian wedding with vibrant decorations" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Bridal</span>
-            </div>
-        </article>
+    <!-- Wedding -->
+    <div class="portfolio-category-group" data-group="wedding">
+        <h3 class="portfolio-category-label">Wedding <span>2 Photos</span></h3>
+        <div class="portfolio-grid">
+            <article class="portfolio-item fade-in" data-category="wedding" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Bridal portrait">
+                <img src="Images/IMG_6994.JPG" alt="Bridal portrait — South Asian wedding with vibrant decorations and colorful umbrellas" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Bridal</span>
+                </div>
+            </article>
+            <article class="portfolio-item fade-in" data-category="wedding" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Mehndi celebration">
+                <img src="Images/IMG_6993.JPG" alt="Mehndi celebration — South Asian wedding event photography with floral decorations" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Mehndi</span>
+                </div>
+            </article>
+        </div>
+    </div>
 
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Wedding event">
-            <img src="Images/IMG_6993.JPG" alt="Bay Area South Asian wedding event photography — mehndi celebration" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Wedding</span>
-            </div>
-        </article>
+    <!-- Portrait & Creative -->
+    <div class="portfolio-category-group" data-group="portrait">
+        <h3 class="portfolio-category-label">Portrait &amp; Creative <span>1 Photo</span></h3>
+        <div class="portfolio-grid">
+            <article class="portfolio-item fade-in" data-category="portrait" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Creative double exposure portrait">
+                <img src="Images/Baniya copy.JPG" alt="Creative double exposure portrait — artistic black and white photography with forest composite" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Creative Edit</span>
+                </div>
+            </article>
+        </div>
+    </div>
 
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Portrait session">
-            <img src="https://picsum.photos/seed/port303/600/880" alt="Professional portrait photography in Silicon Valley" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Portrait</span>
-            </div>
-        </article>
+    <!-- Landscape & Adventure -->
+    <div class="portfolio-category-group" data-group="landscape">
+        <h3 class="portfolio-category-label">Landscape &amp; Adventure <span>3 Photos</span></h3>
+        <div class="portfolio-grid">
+            <article class="portfolio-item fade-in" data-category="landscape" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Himalayan trekking adventure">
+                <img src="Images/C90B46EC-BE61-4463-BB24-48BB9074F4ED-13978-000005C17D6419F7.JPG" alt="Himalayan trekking adventure — two hikers on misty mountain slope with Nepali flag" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Adventure</span>
+                </div>
+            </article>
+            <article class="portfolio-item fade-in" data-category="landscape" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Mountain sunrise landscape">
+                <img src="Images/IMG_1348.JPG" alt="Mountain sunrise landscape — golden light on snow-capped Himalayan peaks at dawn" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Landscape</span>
+                </div>
+            </article>
+            <article class="portfolio-item fade-in" data-category="landscape" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Annapurna base camp">
+                <img src="Images/_MG_3543 copy.JPG" alt="Annapurna base camp — silhouette of a person gazing at the majestic Himalayan mountain range" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Himalaya</span>
+                </div>
+            </article>
+        </div>
+    </div>
 
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Family session">
-            <img src="https://picsum.photos/seed/fam404/800/560" alt="Family photography session in San Jose, California" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Family</span>
-            </div>
-        </article>
-
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Couples shoot">
-            <img src="https://picsum.photos/seed/coup505/600/740" alt="Romantic couples photography — Bay Area golden hour" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Couples</span>
-            </div>
-        </article>
-
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Event coverage">
-            <img src="https://picsum.photos/seed/evnt606/800/520" alt="Event photography coverage in the Bay Area" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Event</span>
-            </div>
-        </article>
-
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Natural light portrait">
-            <img src="https://picsum.photos/seed/natl707/600/800" alt="Natural light outdoor portrait — San Jose photographer" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Natural Light</span>
-            </div>
-        </article>
-
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Wedding ceremony">
-            <img src="https://picsum.photos/seed/cer808/800/580" alt="Wedding ceremony photography — Bay Area wedding photographer" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Wedding</span>
-            </div>
-        </article>
-
-        <article class="portfolio-item fade-in" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Studio portrait">
-            <img src="https://picsum.photos/seed/stu909/600/840" alt="Studio portrait photography — Silicon Valley headshot photographer" loading="lazy">
-            <div class="portfolio-overlay" aria-hidden="true">
-                <span class="portfolio-overlay-label">Portrait</span>
-            </div>
-        </article>
-
+    <!-- Architecture -->
+    <div class="portfolio-category-group" data-group="architecture">
+        <h3 class="portfolio-category-label">Architecture <span>1 Photo</span></h3>
+        <div class="portfolio-grid">
+            <article class="portfolio-item fade-in" data-category="architecture" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Temple architecture">
+                <img src="Images/IMG_5072.JPG" alt="Temple architecture — dramatic night sky behind a white domed temple tower with moody red clouds" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Architecture</span>
+                </div>
+            </article>
+        </div>
     </div>
 </section>
 
@@ -1443,6 +1516,23 @@
             document.getElementById('contactForm').style.display = 'none';
             document.getElementById('formSuccess').style.display = 'block';
         }, 1400);
+    }
+
+    // ── Portfolio filter ──────────────────────────────────────
+    function filterPortfolio(category) {
+        // Update buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === category);
+        });
+
+        // Show/hide groups and items
+        document.querySelectorAll('.portfolio-category-group').forEach(group => {
+            const groupName = group.dataset.group;
+            const items = group.querySelectorAll('.portfolio-item');
+            const show = category === 'all' || category === groupName;
+            group.classList.toggle('group-hidden', !show);
+            items.forEach(item => item.classList.toggle('hidden', !show));
+        });
     }
 
     // ── Smooth scroll ──────────────────────────────────────────
