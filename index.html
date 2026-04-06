@@ -297,7 +297,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background-image: url('Images/Background.jpg');
+            background-image: url('https://picsum.photos/seed/himalaya88/1920/1080');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -1062,8 +1062,14 @@
 
     <!-- Landscape & Adventure -->
     <div class="portfolio-category-group" data-group="landscape">
-        <h3 class="portfolio-category-label">Landscape &amp; Adventure <span>3 Photos</span></h3>
+        <h3 class="portfolio-category-label">Landscape &amp; Adventure <span>4 Photos</span></h3>
         <div class="portfolio-grid">
+            <article class="portfolio-item fade-in" data-category="landscape" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Mirrored mountain landscape">
+                <img src="Images/Background.jpg" alt="Mirrored mountain landscape — creative symmetrical reflection of snow-capped Himalayan peaks" loading="lazy">
+                <div class="portfolio-overlay" aria-hidden="true">
+                    <span class="portfolio-overlay-label">Creative Landscape</span>
+                </div>
+            </article>
             <article class="portfolio-item fade-in" data-category="landscape" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Himalayan trekking adventure">
                 <img src="Images/C90B46EC-BE61-4463-BB24-48BB9074F4ED-13978-000005C17D6419F7.JPG" alt="Himalayan trekking adventure — two hikers on misty mountain slope with Nepali flag" loading="lazy">
                 <div class="portfolio-overlay" aria-hidden="true">
@@ -1449,7 +1455,7 @@
     const heroBg = document.getElementById('heroBg');
     const heroImg = new Image();
     heroImg.onload = () => heroBg.classList.add('loaded');
-    heroImg.src = 'Images/Background.jpg';
+    heroImg.src = 'https://picsum.photos/seed/himalaya88/1920/1080';
 
     // ── Scroll fade-in animations ─────────────────────────────
     const observer = new IntersectionObserver((entries) => {
