@@ -564,6 +564,25 @@
         .portfolio-item:hover .portfolio-overlay { background: rgba(26,26,26,0.42); }
         .portfolio-item:hover .portfolio-overlay-label { opacity: 1; transform: translateY(0); }
 
+        /* Cohesive landscape grid — equal height cards in a regular grid */
+        .portfolio-grid-uniform {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 14px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        .portfolio-grid-uniform .portfolio-item {
+            break-inside: unset;
+            margin-bottom: 0;
+        }
+        .portfolio-grid-uniform .portfolio-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
         /* Hide entire category group if all items hidden */
         .portfolio-category-group.group-hidden { display: none; }
 
@@ -1063,7 +1082,7 @@
     <!-- Landscape & Adventure -->
     <div class="portfolio-category-group" data-group="landscape">
         <h3 class="portfolio-category-label">Landscape &amp; Adventure <span>4 Photos</span></h3>
-        <div class="portfolio-grid">
+        <div class="portfolio-grid-uniform">
             <article class="portfolio-item fade-in" data-category="landscape" role="listitem" onclick="openLightbox(this)" tabindex="0" aria-label="View: Mirrored mountain landscape">
                 <img src="Images/Background.jpg" alt="Mirrored mountain landscape — creative symmetrical reflection of snow-capped Himalayan peaks" loading="lazy">
                 <div class="portfolio-overlay" aria-hidden="true">
