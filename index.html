@@ -943,16 +943,75 @@
         }
         .form-submit:hover { background: var(--black); }
         .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-        .form-success {
+        .form-success { display: none; }
+
+        /* ── Thank You Popup ── */
+        .ty-overlay {
             display: none;
-            text-align: center;
-            padding: 40px 20px;
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-            font-style: italic;
-            color: var(--accent);
-            line-height: 1.5;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
         }
+        .ty-overlay.open { display: flex; }
+        .ty-modal {
+            background: linear-gradient(145deg, #141414, #1e1c18);
+            border: 1px solid rgba(201,169,110,0.35);
+            border-radius: 4px;
+            padding: 60px 50px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: tyFadeIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes tyFadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .ty-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 28px;
+            border: 1.5px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ty-icon svg { width: 26px; height: 26px; stroke: var(--accent); }
+        .ty-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--accent);
+            margin-bottom: 16px;
+            letter-spacing: 0.02em;
+        }
+        .ty-msg {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: #aaa;
+            line-height: 1.8;
+            margin-bottom: 36px;
+        }
+        .ty-close {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid rgba(201,169,110,0.4);
+            background: transparent;
+            padding: 12px 32px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .ty-close:hover { background: var(--accent); color: var(--black); }
 
         /* ============================================
            FOOTER
@@ -1739,12 +1798,19 @@
         const btn = document.getElementById('submitBtn');
         btn.textContent = 'Sending…';
         btn.disabled = true;
-        // Simulate async send — replace with real endpoint
         setTimeout(() => {
-            document.getElementById('contactForm').style.display = 'none';
-            document.getElementById('formSuccess').style.display = 'block';
+            document.getElementById('contactForm').reset();
+            btn.textContent = 'Send Message — Let\'s Create';
+            btn.disabled = false;
+            document.getElementById('tyOverlay').classList.add('open');
         }, 1400);
     }
+    function closeTyPopup() {
+        document.getElementById('tyOverlay').classList.remove('open');
+    }
+    document.getElementById('tyOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeTyPopup();
+    });
 
     // ── About Carousel ────────────────────────────────────────
     let carouselIndex = 0;
@@ -1791,6 +1857,24 @@
         });
     });
 </script>
+
+<!-- Thank You Popup -->
+<div class="ty-overlay" id="tyOverlay" role="dialog" aria-modal="true" aria-labelledby="tyTitle">
+    <div class="ty-modal">
+        <div class="ty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+        <h3 class="ty-title" id="tyTitle">Thank You</h3>
+        <p class="ty-msg">
+            Thank you for reaching out to Bishal Imagery.<br>
+            We've received your message and will get back<br>
+            to you to make this experience truly special.
+        </p>
+        <button class="ty-close" onclick="closeTyPopup()">Close</button>
+    </div>
+</div>
 
 </body>
 </html>
