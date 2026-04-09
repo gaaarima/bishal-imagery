@@ -636,13 +636,12 @@
         .carousel-track {
             display: flex;
             height: 100%;
-            width: 100%;
             will-change: transform;
             transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .carousel-slide {
             min-width: 100%;
-            flex-shrink: 0;
+            flex: 0 0 100%;
             height: 100%;
             overflow: hidden;
         }
@@ -1145,7 +1144,7 @@
 ============================================= -->
 <nav class="nav transparent" id="mainNav" role="navigation" aria-label="Main navigation">
     <a href="#home" class="nav-logo" aria-label="Bishal Imagery — Home">
-        <img src="Images/Logo.jpg" alt="Bishal Imagery logo" class="nav-logo-img">
+        <img src="Images/Logo.jpg" alt="Bishal Imagery — camera and mountain icon, Bay Area photography brand mark" class="nav-logo-img">
         Bishal Imagery
     </a>
 
@@ -1383,11 +1382,11 @@
                     </div>
 
                 </div>
-                <button class="carousel-btn carousel-prev" aria-label="Previous photo" onclick="moveCarousel(-1)">&#8592;</button>
-                <button class="carousel-btn carousel-next" aria-label="Next photo" onclick="moveCarousel(1)">&#8594;</button>
+                <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Previous photo">&#8592;</button>
+                <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next photo">&#8594;</button>
                 <div class="carousel-dots" id="carouselDots">
-                    <span class="c-dot active" onclick="goCarousel(0)"></span>
-                    <span class="c-dot" onclick="goCarousel(1)"></span>
+                    <span class="c-dot active"></span>
+                    <span class="c-dot"></span>
                 </div>
             </div>
         </div>
@@ -1692,7 +1691,7 @@
 <footer role="contentinfo">
     <div class="footer-inner">
         <div class="footer-logo">
-            <img src="Images/Logo.jpg" alt="Bishal Imagery logo" class="footer-logo-img">
+            <img src="Images/Logo.jpg" alt="Bishal Imagery — camera and mountain icon, Bay Area photography brand mark" class="footer-logo-img">
             Bishal Imagery
         </div>
 
@@ -1816,28 +1815,33 @@
     });
 
     // ── About Carousel ────────────────────────────────────────
-    let carouselIndex = 0;
-    const totalSlides = 2;
-    const track = document.getElementById('carouselTrack');
-    const dots = document.querySelectorAll('.c-dot');
+    (function () {
+        const track = document.getElementById('carouselTrack');
+        const dots  = document.querySelectorAll('#carouselDots .c-dot');
+        const total = dots.length;
+        let idx = 0;
 
-    function goCarousel(n) {
-        carouselIndex = (n + totalSlides) % totalSlides;
-        track.style.transform = `translateX(-${carouselIndex * 100}%)`;
-        dots.forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
-    }
-    function moveCarousel(dir) { goCarousel(carouselIndex + dir); }
+        function show(n) {
+            idx = (n + total) % total;
+            track.style.transform = `translateX(-${idx * 100}%)`;
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
 
-    // Touch / swipe support
-    let touchStartX = 0;
-    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
-        const diff = touchStartX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 40) moveCarousel(diff > 0 ? 1 : -1);
-    }, { passive: true });
+        document.getElementById('carouselPrev').addEventListener('click', () => show(idx - 1));
+        document.getElementById('carouselNext').addEventListener('click', () => show(idx + 1));
+        dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
 
-    // Auto-advance every 4s
-    setInterval(() => moveCarousel(1), 4000);
+        // Touch swipe
+        let startX = 0;
+        track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+        track.addEventListener('touchend',   e => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) show(idx + (diff > 0 ? 1 : -1));
+        }, { passive: true });
+
+        // Auto-advance every 4s
+        setInterval(() => show(idx + 1), 4000);
+    })();
 
     // ── Portfolio filter ──────────────────────────────────────
     function filterPortfolio(category) {
