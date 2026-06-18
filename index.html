@@ -1798,15 +1798,34 @@
     // ── Contact form ──────────────────────────────────────────
     function handleSubmit(e) {
         e.preventDefault();
+        const form = document.getElementById('contactForm');
         const btn = document.getElementById('submitBtn');
+        const original = "Send Message — Let's Create";
         btn.textContent = 'Sending…';
         btn.disabled = true;
-        setTimeout(() => {
-            document.getElementById('contactForm').reset();
-            btn.textContent = 'Send Message — Let\'s Create';
+
+        const data = new FormData(form);
+        data.append('_subject', 'New inquiry from Bishal Imagery website');
+        data.append('_template', 'table');
+        data.append('_captcha', 'false');
+
+        fetch('https://formsubmit.co/ajax/bishalimagery@gmail.com', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: data
+        })
+        .then(res => res.json())
+        .then(() => {
+            form.reset();
+            btn.textContent = original;
             btn.disabled = false;
             document.getElementById('tyOverlay').classList.add('open');
-        }, 1400);
+        })
+        .catch(() => {
+            btn.textContent = original;
+            btn.disabled = false;
+            alert('Sorry, something went wrong sending your message. Please email bishalimagery@gmail.com or call 408-663-3851 directly.');
+        });
     }
     function closeTyPopup() {
         document.getElementById('tyOverlay').classList.remove('open');
