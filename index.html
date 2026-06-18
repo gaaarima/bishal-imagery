@@ -657,25 +657,6 @@
             object-fit: cover;
             object-position: center;
         }
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(250,250,248,0.88);
-            border: 1px solid var(--accent-light);
-            width: 38px; height: 38px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-            transition: var(--transition);
-            color: var(--accent);
-            font-size: 1rem;
-        }
-        .carousel-btn:hover { background: var(--accent); color: white; }
-        .carousel-prev { left: 12px; }
-        .carousel-next { right: 12px; }
         .carousel-dots {
             position: absolute;
             bottom: 14px;
@@ -1382,8 +1363,6 @@
                     </div>
 
                 </div>
-                <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Previous photo">&#8592;</button>
-                <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next photo">&#8594;</button>
                 <div class="carousel-dots" id="carouselDots">
                     <span class="c-dot active"></span>
                     <span class="c-dot"></span>
@@ -1851,8 +1830,6 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
-        document.getElementById('carouselPrev').addEventListener('click', () => show(idx - 1));
-        document.getElementById('carouselNext').addEventListener('click', () => show(idx + 1));
         dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
 
         // Touch swipe
