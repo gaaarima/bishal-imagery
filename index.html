@@ -1652,7 +1652,7 @@
 
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" placeholder="(408) 000-0000" autocomplete="tel">
+                    <input type="tel" id="phone" name="phone" placeholder="(408) 000-0000" required autocomplete="tel">
                 </div>
 
                 <div class="form-group">
@@ -1799,6 +1799,10 @@
     function handleSubmit(e) {
         e.preventDefault();
         const form = document.getElementById('contactForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
         const btn = document.getElementById('submitBtn');
         const original = "Send Message — Let's Create";
         btn.textContent = 'Sending…';
